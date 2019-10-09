@@ -21,6 +21,10 @@ namespace webAPIStarter
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                //New
+                .ConfigureAppConfiguration(configHost => {
+                    configHost.AddJsonFile("config.json", false, true);
                 });
     }
 }
