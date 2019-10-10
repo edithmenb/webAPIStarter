@@ -18,24 +18,31 @@ namespace webAPIStarter.Controllers
             };
         }
         [HttpGet("api/BlogPosts")]
-        public string Get()
+        public List<PostModel> Get()
         {
-            return "Get method!";
-            //return this.posts  //List<PostModel>
+            return this.posts;
         }
-        [HttpPost("api/BlogPosts")]
-        public string Insert()
+
+        [HttpGet("api/BlogPosts/{Id}")]
+        public PostModel GetById([FromRoute] long Id)
         {
-            PostModel newPost = new PostModel 
+            foreach(PostModel post in this.posts)
             {
-                Id = 4, 
-                Title = "Fourth Post", 
-                Author = "Alejandro", 
-                Content = "Fourth Post by Alejandro" 
-            };
+                if(post.Id == Id)
+                {
+                    return post;
+                }
+            }
+            return null;
+        }
+
+        [HttpPost("api/BlogPosts")]
+        public PostModel Insert([FromBody]PostModel newPost)
+        {
+            newPost.Id = this.posts.Count + 1;
             this.posts.Add(newPost);
 
-            return "Fourth Post Added!";
+            return this.posts[this.posts.Count - 1];
         }
         [HttpPut("api/BlogPosts")]
         public string Put()
