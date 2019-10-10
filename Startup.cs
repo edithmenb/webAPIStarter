@@ -32,17 +32,17 @@ namespace webAPIStarter
 
             app.UseHttpsRedirection();
 
-            //app.UseRouting();
+            app.UseRouting();
 
             app.UseAuthorization();
 
             //new
-            app.UseMvc();
+            //app.UseMvc();
 
-            // app.UseEndpoints(endpoints =>
-            // {
-            //     endpoints.MapControllers();
-            // });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
