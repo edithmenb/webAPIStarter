@@ -21,6 +21,7 @@ namespace webAPIStarter.Controllers
         public string Get()
         {
             return "Get method!";
+            //return this.posts  //List<PostModel>
         }
         [HttpPost("api/BlogPosts")]
         public string Insert()
