@@ -5,54 +5,56 @@ using webAPIStarter.Models;
 namespace webAPIStarter.Controllers
 {
     [ApiController]
-    public class BlogPostsController : ControllerBase
+    [Route("api/BlogPosts")]
+    public class BlogPostController: ControllerBase
     {
         public List<PostModel> posts;
-        public BlogPostsController() 
+        public BlogPostController()
         {
-            posts = new List<PostModel>
-            {
-                new PostModel { Id = 1, Title = "First Post", Author = "Oscar Recio", Content = "First Post by Oscar Recio"},
-                new PostModel { Id = 2, Title = "Second Post", Author = "Edith Mendoza", Content = "Second Post by Edith Mendoza"},
-                new PostModel { Id = 3, Title = "Third Post", Author = "Diego", Content = "Third Post by Diego"}
+            posts = new List<PostModel>{
+                new PostModel { Id = 1, Title = "First PostModel", Author = "Oscar Recio", Content = "First PostModel by Oscar Recio"},
+                new PostModel { Id = 2, Title = "Second PostModel", Author = "Edith Mendoza", Content = "Second PostModel by Edith Mendoza"},
+                new PostModel { Id = 3, Title = "Third PostModel", Author = "Diego", Content = "Third PostModel by Diego"}
             };
         }
-        [HttpGet("api/BlogPosts")]
-        public List<PostModel> Get()
+        [HttpGet]
+        public List<PostModel> GetAllPosts()
         {
             return this.posts;
         }
 
-        [HttpGet("api/BlogPosts/{Id}")]
+        [HttpGet("{Id}")]
+        [Produces("application/xml")]
         public PostModel GetById([FromRoute] long Id)
         {
-            foreach(PostModel post in this.posts)
+            foreach (PostModel post in this.posts)
             {
-                if(post.Id == Id)
-                {
+                if(post.Id == Id){
                     return post;
                 }
             }
             return null;
         }
 
-        [HttpPost("api/BlogPosts")]
-        public PostModel Insert([FromBody]PostModel newPost)
+        [HttpPost]
+        [Consumes("application/xml")]
+        public PostModel InsertNewPost([FromBody]PostModel newPost)
         {
-            newPost.Id = this.posts.Count + 1;
-            this.posts.Add(newPost);
-
-            return this.posts[this.posts.Count - 1];
+            newPost.Id = this.posts.Count+1;
+            posts.Add(newPost);
+            return this.posts[this.posts.Count-1];
         }
-        [HttpPut("api/BlogPosts")]
+
+        [HttpPut]
         public string Put()
         {
             return "Put method!";
         }
-        [HttpDelete("api/BlogPosts")]
+        [HttpDelete]
         public string Delete() 
         {
             return "Delete method!";
         }
+
     }
 }
