@@ -17,6 +17,7 @@ namespace webAPIStarter.Controllers
                 new PostModel { Id = 3, Title = "Third PostModel", Author = "Diego", Content = "Third PostModel by Diego"}
             };
         }
+
         [HttpGet]
         public List<PostModel> GetAllPosts()
         {
@@ -24,7 +25,7 @@ namespace webAPIStarter.Controllers
         }
 
         [HttpGet("{Id}")]
-        [Produces("application/xml")]
+        // [Produces("application/xml")]
         public PostModel GetById([FromRoute] long Id)
         {
             foreach (PostModel post in this.posts)
@@ -37,23 +38,45 @@ namespace webAPIStarter.Controllers
         }
 
         [HttpPost]
-        [Consumes("application/xml")]
-        public PostModel InsertNewPost([FromBody]PostModel newPost)
+        // [Consumes("application/xml")]
+        public IActionResult InsertNewPost([FromBody]PostModel newPost)
         {
             newPost.Id = this.posts.Count+1;
             posts.Add(newPost);
-            return this.posts[this.posts.Count-1];
+            foreach(PostModel post in posts){
+                if (post.Id == newPost.Id) {
+                    return StatusCode(201);
+                }
+            }
+            return StatusCode(500, new { errorMessage = "Could not store value"});
         }
 
         [HttpPut]
-        public string Put()
+        public IActionResult Put([FromBody] PostModel updatedPost)
         {
-            return "Put method!";
+            foreach(PostModel post in posts)
+            {
+                if (post.Id == updatedPost.Id)
+                {
+                    post.Title = updatedPost.Title;
+                    post.Author = updatedPost.Author;
+                    post.Content = updatedPost.Content;
+                }
+            }
+            return NoContent();
         }
-        [HttpDelete]
-        public string Delete() 
+        [HttpDelete("{Id}")]
+        public IActionResult Delete([FromRoute] long id) 
         {
-            return "Delete method!";
+            foreach(PostModel post in posts)
+            {
+                if (post.Id == id)
+                {
+                    posts.Remove(post);
+                    return StatusCode(410);
+                }
+            }
+            return NotFound();
         }
 
     }
