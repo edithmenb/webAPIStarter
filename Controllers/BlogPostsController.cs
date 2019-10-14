@@ -26,44 +26,58 @@ namespace webAPIStarter.Controllers
 
         [HttpGet("{Id}")]
         // [Produces("application/xml")]
-        public PostModel GetById([FromRoute] long Id)
+        public IActionResult GetById([FromRoute] long Id)
         {
             foreach (PostModel post in this.posts)
             {
                 if(post.Id == Id){
-                    return post;
+                    return Ok(post);
                 }
             }
-            return null;
+            return NoContent();
         }
 
         [HttpPost]
         // [Consumes("application/xml")]
         public IActionResult InsertNewPost([FromBody]PostModel newPost)
         {
-            newPost.Id = this.posts.Count+1;
-            posts.Add(newPost);
-            foreach(PostModel post in posts){
-                if (post.Id == newPost.Id) {
-                    return StatusCode(201);
+            if (ModelState.IsValid)
+            {
+                newPost.Id = this.posts.Count+1;
+                posts.Add(newPost);
+                foreach(PostModel post in posts){
+                    if (post.Id == newPost.Id) {
+                        return StatusCode(201);
+                    }
                 }
+                return StatusCode(500, new { errorMessage = "Could not store value"});
             }
-            return StatusCode(500, new { errorMessage = "Could not store value"});
+            else
+            {
+                return base.ValidationProblem();
+            }
         }
 
         [HttpPut]
         public IActionResult Put([FromBody] PostModel updatedPost)
         {
-            foreach(PostModel post in posts)
+            if (ModelState.IsValid)
             {
-                if (post.Id == updatedPost.Id)
+                foreach(PostModel post in posts)
                 {
-                    post.Title = updatedPost.Title;
-                    post.Author = updatedPost.Author;
-                    post.Content = updatedPost.Content;
+                    if (post.Id == updatedPost.Id)
+                    {
+                        post.Title = updatedPost.Title;
+                        post.Author = updatedPost.Author;
+                        post.Content = updatedPost.Content;
+                    }
                 }
+                return NoContent();
             }
-            return NoContent();
+            else
+            {
+                return base.ValidationProblem();
+            }
         }
         [HttpDelete("{Id}")]
         public IActionResult Delete([FromRoute] long id) 
