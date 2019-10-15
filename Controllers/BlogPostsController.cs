@@ -70,6 +70,7 @@ namespace webAPIStarter.Controllers
                         post.Title = updatedPost.Title;
                         post.Author = updatedPost.Author;
                         post.Content = updatedPost.Content;
+                        return Ok();
                     }
                 }
                 return NoContent();
