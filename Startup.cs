@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using webAPIStarter.BlogPostService;
 namespace webAPIStarter
 {
     public class Startup
@@ -21,6 +21,7 @@ namespace webAPIStarter
         {
             services.AddControllers()
                     .AddXmlSerializerFormatters();
+            services.AddTransient<IBlogPostService, InMemoryPostService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
