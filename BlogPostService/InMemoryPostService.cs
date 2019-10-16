@@ -1,19 +1,19 @@
 using System.Collections.Generic;
-using webAPIStarter.Models;
+using WebAPIStarterData.Models;
 
 namespace webAPIStarter.BlogPostService
 {
     public class InMemoryPostService : IBlogPostService
     {
-        private IList<PostModel> posts;
+        private IList<BlogPost> posts;
 
-        public InMemoryPostService(List<PostModel> posts = null)
+        public InMemoryPostService(List<BlogPost> posts = null)
         {
-            this.posts = posts ?? new List<PostModel>();
+            this.posts = posts ?? new List<BlogPost>();
         }
-        public void Delete(PostModel deletedPost)
+        public void Delete(BlogPost deletedPost)
         {
-            foreach(PostModel post in posts)
+            foreach(BlogPost post in posts)
             {
                 if(post.Id == deletedPost.Id)
                 {
@@ -22,14 +22,14 @@ namespace webAPIStarter.BlogPostService
             }
         }
 
-        public IList<PostModel> GetAll()
+        public IList<BlogPost> GetAll()
         {
             return this.posts;
         }
 
-        public PostModel GetById(long Id)
+        public BlogPost GetById(long Id)
         {
-            foreach(PostModel post in posts)
+            foreach(BlogPost post in posts)
             {
                 if(post.Id == Id)
                 {
@@ -39,16 +39,16 @@ namespace webAPIStarter.BlogPostService
             return null;
         }
 
-        public PostModel Insert(PostModel newPost)
+        public BlogPost Insert(BlogPost newPost)
         {
             newPost.Id = this.posts.Count + 1;
             this.posts.Add(newPost);
             return newPost;
         }
 
-        public void Update(PostModel updatedPost)
+        public void Update(BlogPost updatedPost)
         {
-            foreach(PostModel post in posts)
+            foreach(BlogPost post in posts)
             {
                 if(post.Id == updatedPost.Id)
                 {

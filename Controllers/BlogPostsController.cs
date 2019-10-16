@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using webAPIStarter.BlogPostService;
-using webAPIStarter.Models;
+using WebAPIStarterData.Models;
 
 namespace webAPIStarter.Controllers
 {
@@ -16,7 +16,7 @@ namespace webAPIStarter.Controllers
         }
 
         [HttpGet]
-        public IList<PostModel> GetAllPosts()
+        public IList<BlogPost> GetAllPosts()
         {
             return this.postService.GetAll();
         }
@@ -32,7 +32,7 @@ namespace webAPIStarter.Controllers
 
         [HttpPost]
         // [Consumes("application/xml")]
-        public IActionResult InsertNewPost([FromBody]PostModel newPost)
+        public IActionResult InsertNewPost([FromBody]BlogPost newPost)
         {
             if(ModelState.IsValid)
             {
@@ -45,7 +45,7 @@ namespace webAPIStarter.Controllers
             // {
             //     newPost.Id = this.posts.Count+1;
             //     posts.Add(newPost);
-            //     foreach(PostModel post in posts){
+            //     foreach(BlogPost post in posts){
             //         if (post.Id == newPost.Id) {
             //             return StatusCode(201);
             //         }
@@ -59,7 +59,7 @@ namespace webAPIStarter.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] PostModel updatedPost)
+        public IActionResult Put([FromBody] BlogPost updatedPost)
         {
             postService.Update(updatedPost);
             if(postService.GetById(updatedPost.Id) != null)
@@ -69,7 +69,7 @@ namespace webAPIStarter.Controllers
             return NotFound();
             // if (ModelState.IsValid)
             // {
-            //     foreach(PostModel post in posts)
+            //     foreach(BlogPost post in posts)
             //     {
             //         if (post.Id == updatedPost.Id)
             //         {
@@ -89,7 +89,7 @@ namespace webAPIStarter.Controllers
         [HttpDelete("{Id}")]
         public IActionResult Delete([FromRoute] long id) 
         {
-            PostModel deletedPost = postService.GetById(id);
+            BlogPost deletedPost = postService.GetById(id);
 
             if(deletedPost == null)
             {
@@ -97,7 +97,7 @@ namespace webAPIStarter.Controllers
             }
             postService.Delete(deletedPost);
             return StatusCode(410);
-            // foreach(PostModel post in posts)
+            // foreach(BlogPost post in posts)
             // {
             //     if (post.Id == id)
             //     {
