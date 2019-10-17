@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using webAPIStarter.BlogPostService;
+using WebAPIStarterData;
+
 namespace webAPIStarter
 {
     public class Startup
@@ -21,7 +24,11 @@ namespace webAPIStarter
         {
             services.AddControllers()
                     .AddXmlSerializerFormatters();
-            services.AddTransient<IBlogPostService, InMemoryPostService>();
+            services.AddTransient<IBlogPostService, InMemoryDataBaseBlogPostService>();
+            services.AddDbContext<WebAPIStarterContext>(options =>
+            {
+                options.UseInMemoryDatabase("WebAPIStarter");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

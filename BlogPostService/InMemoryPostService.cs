@@ -3,11 +3,11 @@ using WebAPIStarterData.Models;
 
 namespace webAPIStarter.BlogPostService
 {
-    public class InMemoryPostService : IBlogPostService
+    public class InMemoryBlogPostService : IBlogPostService
     {
         private IList<BlogPost> posts;
 
-        public InMemoryPostService(List<BlogPost> posts = null)
+        public InMemoryBlogPostService(List<BlogPost> posts = null)
         {
             this.posts = posts ?? new List<BlogPost>();
         }
