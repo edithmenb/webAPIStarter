@@ -27,7 +27,10 @@ namespace webAPIStarter
             services.AddTransient<IBlogPostService, InMemoryDataBaseBlogPostService>();
             services.AddDbContext<WebAPIStarterContext>(options =>
             {
-                options.UseInMemoryDatabase("WebAPIStarter");
+                // options.UseInMemoryDatabase("WebAPIStarter");
+                options.UseSqlite(
+                    Configuration.GetConnectionString("WebAPIStarterDatabase"),
+                    m => m.MigrationsAssembly("webAPIStarter"));
             });
         }
 
